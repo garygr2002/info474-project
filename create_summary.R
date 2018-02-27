@@ -12,9 +12,11 @@ estBetaParams <- function(mu, var) {
 
 # Build up the aggregation dataset.
 vote_totals <- read.csv('vote_totals.csv')
-vote_totals <- vote_totals[vote_totals$abbreviation != 'US',]
-aggregation <- aggregate(fraction_democratic ~ state, data = vote_totals, mean)
-temp <- aggregate(fraction_republican ~ state, data = vote_totals, mean)
+# vote_totals <- vote_totals[vote_totals$abbreviation != 'US',]
+# aggregation <- aggregate(fraction_democratic ~ state, data = vote_totals, mean)
+# temp <- aggregate(fraction_republican ~ state, data = vote_totals, mean)
+aggregation <- aggregate(fraction_democratic ~ abbreviation, data = vote_totals, mean)
+temp <- aggregate(fraction_republican ~ abbreviation, data = vote_totals, mean)
 aggregation$fraction_republican <- temp$fraction_republican
 aggregation$partisanship <- sqrt(abs(aggregation$fraction_democratic - 0.5))
 temp <- aggregate(fraction_democratic ~ state, data = vote_totals, var)
