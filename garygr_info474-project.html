@@ -4,14 +4,14 @@
 <table style="width:100%">
   <tr>
     <th align="left">Please select the election to simulate:</th>
-    <th align="left">As desired, select a factor between 0.9 and 1.1 to apply to the the beta distributions of all states:</th>
-  <tr>
+    <th align="left">As desired, select a factor between 0.9 and 1.1 to apply to the variance of the beta distributions of all states:</th>
   </tr>
+  <tr>
     <td>
       <form>
         <div>
           <input type="radio" id="id_2000"
-          name="year_choice" value="value_2000">
+          name="year_choice" value="value_2000" checked="checked">
           <label for="id_2000">2000</label>
 
           <input type="radio" id="id_2004"
@@ -32,10 +32,10 @@
         </div>
       </form>
     </td>
-    <td><input type="number" min="0.9" max="1.1" step="0.01" name="variance_factor" value="1.0" /></td>
+    <td><input type="number" min="0.9" max="1.1" step="0.01" id="variance_factor" value="1.0" /></td>
   </tr>
 </table>
-<p><b>Modify the default mean of the beta distribution for any state:</b><p/>
+<p><b>Modify the default mean of the beta distribution for any state:</b></p>
 <table style="width:100%">
   <tr>
     <th align="left">State</th>
@@ -47,139 +47,139 @@
   </tr>
   <tr>
     <td>Alabama</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="alabama_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="alabama_mean" value="0.5" /></td>
     <td>Alaska</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="alaska_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="alaska_mean" value="0.5" /></td>
     <td>Arizona</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="arizona_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="arizona_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>Arkansas</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="arkansas_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="arkansas_mean" value="0.5" /></td>
     <td>California</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="california_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="california_mean" value="0.5" /></td>
     <td>Colorado</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="colorado_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="colorado_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>Connecticut</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="connecticut_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="connecticut_mean" value="0.5" /></td>
     <td>Delaware</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="delaware_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="delaware_mean" value="0.5" /></td>
     <td>D.C.</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="dc_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="dc_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>Florida</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="florida_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="florida_mean" value="0.5" /></td>
     <td>Georgia</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="georgia_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="georgia_mean" value="0.5" /></td>
     <td>Hawaii</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="hawaii_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="hawaii_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>Idaho</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="idaho_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="idaho_mean" value="0.5" /></td>
     <td>Illinois</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="illinois_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="illinois_mean" value="0.5" /></td>
     <td>Indiana</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="indiana_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="indiana_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>Iowa</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="iowa_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="iowa_mean" value="0.5" /></td>
     <td>Kansas</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="kansas_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="kansas_mean" value="0.5" /></td>
     <td>Kentucky</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="kentucky_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="kentucky_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>Louisiana</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="louisiana_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="louisiana_mean" value="0.5" /></td>
     <td>Maine</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="maine_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="maine_mean" value="0.5" /></td>
     <td>Maryland</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="maryland_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="maryland_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>Massachusetts</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="massachusetts_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="massachusetts_mean" value="0.5" /></td>
     <td>Michigan</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="michigan_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="michigan_mean" value="0.5" /></td>
     <td>Minnesota</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="minnesota_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="minnesota_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>Mississippi</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="mississippi_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="mississippi_mean" value="0.5" /></td>
     <td>Missouri</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="missouri_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="missouri_mean" value="0.5" /></td>
     <td>Montana</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="montana_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="montana_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>Nebraska</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="nebraska_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="nebraska_mean" value="0.5" /></td>
     <td>Nevada</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="nevada_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="nevada_mean" value="0.5" /></td>
     <td>New Hampshire</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="new_hampshire_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="new_hampshire_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>New Jersey</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="new_jersey_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="new_jersey_mean" value="0.5" /></td>
     <td>New Mexico</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="new_mexico_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="new_mexico_mean" value="0.5" /></td>
     <td>New York</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="new_york_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="new_york_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>North Carolina</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="north_carolina_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="north_carolina_mean" value="0.5" /></td>
     <td>North Dakota</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="north_dakota_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="north_dakota_mean" value="0.5" /></td>
     <td>Ohio</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="ohio_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="ohio_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>Oklahoma</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="oklahoma_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="oklahoma_mean" value="0.5" /></td>
     <td>Oregon</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="oregon_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="oregon_mean" value="0.5" /></td>
     <td>Pennsylvania</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="pennsylvania_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="pennsylvania_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>Rhode Island</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="rhode_island_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="rhode_island_mean" value="0.5" /></td>
     <td>South Carolina</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="south_carolina_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="south_carolina_mean" value="0.5" /></td>
     <td>South Dakota</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="south_dakota_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="south_dakota_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>Tennessee</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="tennessee_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="tennessee_mean" value="0.5" /></td>
     <td>Texas</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="texas_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="texas_mean" value="0.5" /></td>
     <td>Utah</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="utah_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="utah_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>Vermont</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="vermont_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="vermont_mean" value="0.5" /></td>
     <td>Virginia</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="virginia_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="virginia_mean" value="0.5" /></td>
     <td>Washington</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="washington_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="washington_mean" value="0.5" /></td>
   </tr>
   <tr>
     <td>West Virginia</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="west_virginia_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="west_virginia_mean" value="0.5" /></td>
     <td>Wisconsin</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="wisconsin_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="wisconsin_mean" value="0.5" /></td>
     <td>Wyoming</td>
-    <td><input type="number" min="0.0" max="1.0" step="0.01" name="wyoming_mean" value="0.5" /></td>
+    <td><input type="number" min="0.0" max="1.0" step="0.01" id="wyoming_mean" value="0.5" /></td>
   </tr>
 </table>
 <style>
@@ -490,7 +490,7 @@ function ready(error, us) {
     .enter().append("path")
       .attr("fill", function(d) {
 
-          my_color = election_2016.get(d.id);
+          my_color = election_2000.get(d.id);
           if (("blue" != my_color) && ("red" != my_color))
               my_color = "green";
           return my_color;
@@ -506,7 +506,376 @@ function ready(error, us) {
 }
 
 </script>
-<button type="button">Ready? Run the Simulation!</button>
-<table>
+<p><button type="button">Run the Simulation!</button></p><p><button>Reset to Actual Results for the Selected Year</button></p>
+<table border="1">
+<caption><b>Simulation Results</b></caption>
+<tr>
+<th>State</th><th>Democratic Votes</th><th>Republican Votes</th><th>Democratic E.V.</th><th>Republican E.V.</th>
+</tr>
+<tr>
+  <td>Alabama</td>
+  <td><label id=alabama_dem_votes>0</label></td>
+  <td><label id=alabama_rep_votes>0</label></td>
+  <td><label id=alabama_dem_evs>0</label></td>
+  <td><label id=alabama_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Alaska</td>
+  <td><label id=alaska_dem_votes>0</label></td>
+  <td><label id=alaska_rep_votes>0</label></td>
+  <td><label id=alaska_dem_evs>0</label></td>
+  <td><label id=alaska_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Arizona</td>
+  <td><label id=arizona_dem_votes>0</label></td>
+  <td><label id=arizona_rep_votes>0</label></td>
+  <td><label id=arizona_dem_evs>0</label></td>
+  <td><label id=arizona_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Arkansas</td>
+  <td><label id=arkansas_dem_votes>0</label></td>
+  <td><label id=arkansas_rep_votes>0</label></td>
+  <td><label id=arkansas_dem_evs>0</label></td>
+  <td><label id=arkansas_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>California</td>
+  <td><label id=california_dem_votes>0</label></td>
+  <td><label id=california_rep_votes>0</label></td>
+  <td><label id=california_dem_evs>0</label></td>
+  <td><label id=california_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Colorado</td>
+  <td><label id=colorado_dem_votes>0</label></td>
+  <td><label id=colorado_rep_votes>0</label></td>
+  <td><label id=colorado_dem_evs>0</label></td>
+  <td><label id=colorado_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Connecticut</td>
+  <td><label id=connecticut_dem_votes>0</label></td>
+  <td><label id=connecticut_rep_votes>0</label></td>
+  <td><label id=connecticut_dem_evs>0</label></td>
+  <td><label id=connecticut_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Delaware</td>
+  <td><label id=delaware_dem_votes>0</label></td>
+  <td><label id=delaware_rep_votes>0</label></td>
+  <td><label id=delaware_dem_evs>0</label></td>
+  <td><label id=delaware_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>D.C.</td>
+  <td><label id=d_c_dem_votes>0</label></td>
+  <td><label id=d_c_rep_votes>0</label></td>
+  <td><label id=d_c_dem_evs>0</label></td>
+  <td><label id=d_c_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Florida</td>
+  <td><label id=florida_dem_votes>0</label></td>
+  <td><label id=florida_rep_votes>0</label></td>
+  <td><label id=florida_dem_evs>0</label></td>
+  <td><label id=florida_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Georgia</td>
+  <td><label id=georgia_dem_votes>0</label></td>
+  <td><label id=georgia_rep_votes>0</label></td>
+  <td><label id=georgia_dem_evs>0</label></td>
+  <td><label id=georgia_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Hawaii</td>
+  <td><label id=hawaii_dem_votes>0</label></td>
+  <td><label id=hawaii_rep_votes>0</label></td>
+  <td><label id=hawaii_dem_evs>0</label></td>
+  <td><label id=hawaii_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Idaho</td>
+  <td><label id=idaho_dem_votes>0</label></td>
+  <td><label id=idaho_rep_votes>0</label></td>
+  <td><label id=idaho_dem_evs>0</label></td>
+  <td><label id=idaho_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Illinois</td>
+  <td><label id=illinois_dem_votes>0</label></td>
+  <td><label id=illinois_rep_votes>0</label></td>
+  <td><label id=illinois_dem_evs>0</label></td>
+  <td><label id=illinois_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Indiana</td>
+  <td><label id=indiana_dem_votes>0</label></td>
+  <td><label id=indiana_rep_votes>0</label></td>
+  <td><label id=indiana_dem_evs>0</label></td>
+  <td><label id=indiana_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Iowa</td>
+  <td><label id=iowa_dem_votes>0</label></td>
+  <td><label id=iowa_rep_votes>0</label></td>
+  <td><label id=iowa_dem_evs>0</label></td>
+  <td><label id=iowa_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Kansas</td>
+  <td><label id=kansas_dem_votes>0</label></td>
+  <td><label id=kansas_rep_votes>0</label></td>
+  <td><label id=kansas_dem_evs>0</label></td>
+  <td><label id=kansas_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Kentucky</td>
+  <td><label id=kentucky_dem_votes>0</label></td>
+  <td><label id=kentucky_rep_votes>0</label></td>
+  <td><label id=kentucky_dem_evs>0</label></td>
+  <td><label id=kentucky_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Louisiana</td>
+  <td><label id=louisiana_dem_votes>0</label></td>
+  <td><label id=louisiana_rep_votes>0</label></td>
+  <td><label id=louisiana_dem_evs>0</label></td>
+  <td><label id=louisiana_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Maine</td>
+  <td><label id=maine_dem_votes>0</label></td>
+  <td><label id=maine_rep_votes>0</label></td>
+  <td><label id=maine_dem_evs>0</label></td>
+  <td><label id=maine_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Maryland</td>
+  <td><label id=maryland_dem_votes>0</label></td>
+  <td><label id=maryland_rep_votes>0</label></td>
+  <td><label id=maryland_dem_evs>0</label></td>
+  <td><label id=maryland_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Massachusetts</td>
+  <td><label id=massachusetts_dem_votes>0</label></td>
+  <td><label id=massachusetts_rep_votes>0</label></td>
+  <td><label id=massachusetts_dem_evs>0</label></td>
+  <td><label id=massachusetts_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Michigan</td>
+  <td><label id=michigan_dem_votes>0</label></td>
+  <td><label id=michigan_rep_votes>0</label></td>
+  <td><label id=michigan_dem_evs>0</label></td>
+  <td><label id=michigan_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Minnesota</td>
+  <td><label id=minnesota_dem_votes>0</label></td>
+  <td><label id=minnesota_rep_votes>0</label></td>
+  <td><label id=minnesota_dem_evs>0</label></td>
+  <td><label id=minnesota_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Mississippi</td>
+  <td><label id=mississippi_dem_votes>0</label></td>
+  <td><label id=mississippi_rep_votes>0</label></td>
+  <td><label id=mississippi_dem_evs>0</label></td>
+  <td><label id=mississippi_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Missouri</td>
+  <td><label id=missouri_dem_votes>0</label></td>
+  <td><label id=missouri_rep_votes>0</label></td>
+  <td><label id=missouri_dem_evs>0</label></td>
+  <td><label id=missouri_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Montana</td>
+  <td><label id=montana_dem_votes>0</label></td>
+  <td><label id=montana_rep_votes>0</label></td>
+  <td><label id=montana_dem_evs>0</label></td>
+  <td><label id=montana_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Nebraska</td>
+  <td><label id=nebraska_dem_votes>0</label></td>
+  <td><label id=nebraska_rep_votes>0</label></td>
+  <td><label id=nebraska_dem_evs>0</label></td>
+  <td><label id=nebraska_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Nevada</td>
+  <td><label id=nevada_dem_votes>0</label></td>
+  <td><label id=nevada_rep_votes>0</label></td>
+  <td><label id=nevada_dem_evs>0</label></td>
+  <td><label id=nevada_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>New Hampshire</td>
+  <td><label id=new_hampshire_dem_votes>0</label></td>
+  <td><label id=new_hampshire_rep_votes>0</label></td>
+  <td><label id=new_hampshire_dem_evs>0</label></td>
+  <td><label id=new_hampshire_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>New Jersey</td>
+  <td><label id=new_jersey_dem_votes>0</label></td>
+  <td><label id=new_jersey_rep_votes>0</label></td>
+  <td><label id=new_jersey_dem_evs>0</label></td>
+  <td><label id=new_jersey_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>New Mexico</td>
+  <td><label id=new_mexico_dem_votes>0</label></td>
+  <td><label id=new_mexico_rep_votes>0</label></td>
+  <td><label id=new_mexico_dem_evs>0</label></td>
+  <td><label id=new_mexico_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>New York</td>
+  <td><label id=new_york_dem_votes>0</label></td>
+  <td><label id=new_york_rep_votes>0</label></td>
+  <td><label id=new_york_dem_evs>0</label></td>
+  <td><label id=new_york_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>North Carolina</td>
+  <td><label id=north_carolina_dem_votes>0</label></td>
+  <td><label id=north_carolina_rep_votes>0</label></td>
+  <td><label id=north_carolina_dem_evs>0</label></td>
+  <td><label id=north_carolina_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>North Dakota</td>
+  <td><label id=north_dakota_dem_votes>0</label></td>
+  <td><label id=north_dakota_rep_votes>0</label></td>
+  <td><label id=north_dakota_dem_evs>0</label></td>
+  <td><label id=north_dakota_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Ohio</td>
+  <td><label id=ohio_dem_votes>0</label></td>
+  <td><label id=ohio_rep_votes>0</label></td>
+  <td><label id=ohio_dem_evs>0</label></td>
+  <td><label id=ohio_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Oklahoma</td>
+  <td><label id=oklahoma_dem_votes>0</label></td>
+  <td><label id=oklahoma_rep_votes>0</label></td>
+  <td><label id=oklahoma_dem_evs>0</label></td>
+  <td><label id=oklahoma_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Oregon</td>
+  <td><label id=oregon_dem_votes>0</label></td>
+  <td><label id=oregon_rep_votes>0</label></td>
+  <td><label id=oregon_dem_evs>0</label></td>
+  <td><label id=oregon_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Pennsylvania</td>
+  <td><label id=pennsylvania_dem_votes>0</label></td>
+  <td><label id=pennsylvania_rep_votes>0</label></td>
+  <td><label id=pennsylvania_dem_evs>0</label></td>
+  <td><label id=pennsylvania_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Rhode Island</td>
+  <td><label id=rhode_island_dem_votes>0</label></td>
+  <td><label id=rhode_island_rep_votes>0</label></td>
+  <td><label id=rhode_island_dem_evs>0</label></td>
+  <td><label id=rhode_island_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>South Carolina</td>
+  <td><label id=south_carolina_dem_votes>0</label></td>
+  <td><label id=south_carolina_rep_votes>0</label></td>
+  <td><label id=south_carolina_dem_evs>0</label></td>
+  <td><label id=south_carolina_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>South Dakota</td>
+  <td><label id=south_dakota_dem_votes>0</label></td>
+  <td><label id=south_dakota_rep_votes>0</label></td>
+  <td><label id=south_dakota_dem_evs>0</label></td>
+  <td><label id=south_dakota_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Tennessee</td>
+  <td><label id=tennessee_dem_votes>0</label></td>
+  <td><label id=tennessee_rep_votes>0</label></td>
+  <td><label id=tennessee_dem_evs>0</label></td>
+  <td><label id=tennessee_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Texas</td>
+  <td><label id=texas_dem_votes>0</label></td>
+  <td><label id=texas_rep_votes>0</label></td>
+  <td><label id=texas_dem_evs>0</label></td>
+  <td><label id=texas_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Utah</td>
+  <td><label id=utah_dem_votes>0</label></td>
+  <td><label id=utah_rep_votes>0</label></td>
+  <td><label id=utah_dem_evs>0</label></td>
+  <td><label id=utah_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Vermont</td>
+  <td><label id=vermont_dem_votes>0</label></td>
+  <td><label id=vermont_rep_votes>0</label></td>
+  <td><label id=vermont_dem_evs>0</label></td>
+  <td><label id=vermont_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Virginia</td>
+  <td><label id=virginia_dem_votes>0</label></td>
+  <td><label id=virginia_rep_votes>0</label></td>
+  <td><label id=virginia_dem_evs>0</label></td>
+  <td><label id=virginia_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Washington</td>
+  <td><label id=washington_dem_votes>0</label></td>
+  <td><label id=washington_rep_votes>0</label></td>
+  <td><label id=washington_dem_evs>0</label></td>
+  <td><label id=washington_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>West Virginia</td>
+  <td><label id=west_virginia_dem_votes>0</label></td>
+  <td><label id=west_virginia_rep_votes>0</label></td>
+  <td><label id=west_virginia_dem_evs>0</label></td>
+  <td><label id=west_virginia_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Wisconsin</td>
+  <td><label id=wisconsin_dem_votes>0</label></td>
+  <td><label id=wisconsin_rep_votes>0</label></td>
+  <td><label id=wisconsin_dem_evs>0</label></td>
+  <td><label id=wisconsin_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>Wyoming</td>
+  <td><label id=wyoming_dem_votes>0</label></td>
+  <td><label id=wyoming_rep_votes>0</label></td>
+  <td><label id=wyoming_dem_evs>0</label></td>
+  <td><label id=wyoming_rep_evs>0</label></td>
+</tr>
+<tr>
+  <td>United States</td>
+  <td><label id=united_states_dem_votes>0</label></td>
+  <td><label id=united_states_rep_votes>0</label></td>
+  <td><label id=united_states_dem_evs>0</label></td>
+  <td><label id=united_states_rep_evs>0</label></td>
+</tr>
 </table>
+
 
