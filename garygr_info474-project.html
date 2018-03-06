@@ -11,23 +11,23 @@
       <form>
         <div>
           <input type="radio" id="id_2000"
-          name="year_choice" value="value_2000" checked="checked">
+          name="year_choice" value="value_2000", onclick="default_year = '2000'; do_draw(our_us, default_year);", checked="checked">
           <label for="id_2000">2000</label>
 
           <input type="radio" id="id_2004"
-          name="year_choice" value="value_2004">
+          name="year_choice" value="value_2004", onclick="default_year = '2004'; do_draw(our_us, default_year);">
           <label for="id_2004">2004</label>
 
           <input type="radio" id="id_2008"
-          name="year_choice" value="value_2008">
+          name="year_choice" value="value_2008", onclick="default_year = '2008'; do_draw(our_us, default_year);">
           <label for="id_2008">2008</label>
 
           <input type="radio" id="id_2012"
-          name="year_choice" value="value_2012">
+          name="year_choice" value="value_2012", onclick="default_year = '2012'; do_draw(our_us, default_year);">
           <label for="id_2012">2012</label>
 
           <input type="radio" id="id_2016"
-          name="year_choice" value="value_2016">
+          name="year_choice" value="value_2016", onclick="default_year = '2016'; do_draw(our_us, default_year);">
           <label for="id_2012">2016</label>
         </div>
       </form>
@@ -201,274 +201,19 @@
 <script src="https://d3js.org/topojson.v2.min.js"></script>
 <script>
 
+var current_year = "2000";
+var our_us;
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height");
 
-var election_2000 = d3.map();
-election_2000.set("01", "red")  // Alabama
-election_2000.set("02", "red")  // Alaska
-election_2000.set("04", "red")  // Arizona
-election_2000.set("05", "red")  // Arkansas
-election_2000.set("06", "blue") // California
-election_2000.set("08", "red")  // Colorado
-election_2000.set("09", "blue") // Connecticut
-election_2000.set("10", "blue") // Delaware
-election_2000.set("11", "blue") // District of Columbia
-election_2000.set("12", "red")  // Florida
-election_2000.set("13", "red")  // Georgia
-election_2000.set("15", "blue") // Hawaii
-election_2000.set("16", "red")  // Idaho
-election_2000.set("17", "blue") // Illinois
-election_2000.set("18", "red")  // Indiana
-election_2000.set("19", "blue") // Iowa
-election_2000.set("20", "red")  // Kansas
-election_2000.set("21", "red")  // Kentucky
-election_2000.set("22", "red")  // Louisiana
-election_2000.set("23", "blue") // Maine
-election_2000.set("24", "blue") // Maryland
-election_2000.set("25", "blue") // Massachusetts
-election_2000.set("26", "blue") // Michigan
-election_2000.set("27", "blue") // Minnesota
-election_2000.set("28", "red")  // Mississippi
-election_2000.set("29", "red")  // Missouri
-election_2000.set("30", "red")  // Montana
-election_2000.set("31", "red")  // Nebraska
-election_2000.set("32", "red")  // Nevada
-election_2000.set("33", "red")  // New Hampshire
-election_2000.set("34", "blue") // New Jersey
-election_2000.set("35", "blue") // New Mexico
-election_2000.set("36", "blue") // New York
-election_2000.set("37", "red")  // North Carolina
-election_2000.set("38", "red")  // North Dakota
-election_2000.set("39", "red")  // Ohio
-election_2000.set("40", "red")  // Oklahoma
-election_2000.set("41", "blue") // Oregon
-election_2000.set("42", "blue") // Pennsylvania
-election_2000.set("44", "blue") // Rhode Island
-election_2000.set("45", "red")  // South Carolina
-election_2000.set("46", "red")  // South Dakota
-election_2000.set("47", "red")  // Tennessee
-election_2000.set("48", "red")  // Texas
-election_2000.set("49", "red")  // Utah
-election_2000.set("50", "blue") // Vermont
-election_2000.set("51", "red")  // Virginia
-election_2000.set("53", "blue") // Washington
-election_2000.set("54", "red")  // West Virginia
-election_2000.set("55", "blue") // Wisconsin
-election_2000.set("56", "red")  // Wyoming
-
-var election_2004 = d3.map();
-election_2004.set("01", "red")  // Alabama
-election_2004.set("02", "red")  // Alaska
-election_2004.set("04", "red")  // Arizona
-election_2004.set("05", "red")  // Arkansas
-election_2004.set("06", "blue") // California
-election_2004.set("08", "red")  // Colorado
-election_2004.set("09", "blue") // Connecticut
-election_2004.set("10", "blue") // Delaware
-election_2004.set("11", "blue") // District of Columbia
-election_2004.set("12", "red")  // Florida
-election_2004.set("13", "red")  // Georgia
-election_2004.set("15", "blue") // Hawaii
-election_2004.set("16", "red")  // Idaho
-election_2004.set("17", "blue") // Illinois
-election_2004.set("18", "red")  // Indiana
-election_2004.set("19", "red")  // Iowa
-election_2004.set("20", "red")  // Kansas
-election_2004.set("21", "red")  // Kentucky
-election_2004.set("22", "red")  // Louisiana
-election_2004.set("23", "blue") // Maine
-election_2004.set("24", "blue") // Maryland
-election_2004.set("25", "blue") // Massachusetts
-election_2004.set("26", "blue") // Michigan
-election_2004.set("27", "blue") // Minnesota
-election_2004.set("28", "red")  // Mississippi
-election_2004.set("29", "red")  // Missouri
-election_2004.set("30", "red")  // Montana
-election_2004.set("31", "red")  // Nebraska
-election_2004.set("32", "red")  // Nevada
-election_2004.set("33", "blue") // New Hampshire
-election_2004.set("34", "blue") // New Jersey
-election_2004.set("35", "red")  // New Mexico
-election_2004.set("36", "blue") // New York
-election_2004.set("37", "red")  // North Carolina
-election_2004.set("38", "red")  // North Dakota
-election_2004.set("39", "red")  // Ohio
-election_2004.set("40", "red")  // Oklahoma
-election_2004.set("41", "blue") // Oregon
-election_2004.set("42", "blue") // Pennsylvania
-election_2004.set("44", "blue") // Rhode Island
-election_2004.set("45", "red")  // South Carolina
-election_2004.set("46", "red")  // South Dakota
-election_2004.set("47", "red")  // Tennessee
-election_2004.set("48", "red")  // Texas
-election_2004.set("49", "red")  // Utah
-election_2004.set("50", "blue") // Vermont
-election_2004.set("51", "red")  // Virginia
-election_2004.set("53", "blue") // Washington
-election_2004.set("54", "red")  // West Virginia
-election_2004.set("55", "blue") // Wisconsin
-election_2004.set("56", "red")  // Wyoming
-
-var election_2008 = d3.map();
-election_2008.set("01", "red")  // Alabama
-election_2008.set("02", "red")  // Alaska
-election_2008.set("04", "red")  // Arizona
-election_2008.set("05", "red")  // Arkansas
-election_2008.set("06", "blue") // California
-election_2008.set("08", "blue") // Colorado
-election_2008.set("09", "blue") // Connecticut
-election_2008.set("10", "blue") // Delaware
-election_2008.set("11", "blue") // District of Columbia
-election_2008.set("12", "blue") // Florida
-election_2008.set("13", "red")  // Georgia
-election_2008.set("15", "blue") // Hawaii
-election_2008.set("16", "red")  // Idaho
-election_2008.set("17", "blue") // Illinois
-election_2008.set("18", "blue") // Indiana
-election_2008.set("19", "blue") // Iowa
-election_2008.set("20", "red")  // Kansas
-election_2008.set("21", "red")  // Kentucky
-election_2008.set("22", "red")  // Louisiana
-election_2008.set("23", "blue") // Maine
-election_2008.set("24", "blue") // Maryland
-election_2008.set("25", "blue") // Massachusetts
-election_2008.set("26", "blue") // Michigan
-election_2008.set("27", "blue") // Minnesota
-election_2008.set("28", "red")  // Mississippi
-election_2008.set("29", "red")  // Missouri
-election_2008.set("30", "red")  // Montana
-election_2008.set("31", "red")  // Nebraska
-election_2008.set("32", "blue") // Nevada
-election_2008.set("33", "blue") // New Hampshire
-election_2008.set("34", "blue") // New Jersey
-election_2008.set("35", "blue") // New Mexico
-election_2008.set("36", "blue") // New York
-election_2008.set("37", "red")  // North Carolina
-election_2008.set("38", "red")  // North Dakota
-election_2008.set("39", "blue") // Ohio
-election_2008.set("40", "red")  // Oklahoma
-election_2008.set("41", "blue") // Oregon
-election_2008.set("42", "blue") // Pennsylvania
-election_2008.set("44", "blue") // Rhode Island
-election_2008.set("45", "red")  // South Carolina
-election_2008.set("46", "red")  // South Dakota
-election_2008.set("47", "red")  // Tennessee
-election_2008.set("48", "red")  // Texas
-election_2008.set("49", "red")  // Utah
-election_2008.set("50", "blue") // Vermont
-election_2008.set("51", "blue") // Virginia
-election_2008.set("53", "blue") // Washington
-election_2008.set("54", "red")  // West Virginia
-election_2008.set("55", "blue") // Wisconsin
-election_2008.set("56", "red")  // Wyoming
-
-var election_2012 = d3.map();
-election_2012.set("01", "red")  // Alabama
-election_2012.set("02", "red")  // Alaska
-election_2012.set("04", "red")  // Arizona
-election_2012.set("05", "red")  // Arkansas
-election_2012.set("06", "blue") // California
-election_2012.set("08", "blue") // Colorado
-election_2012.set("09", "blue") // Connecticut
-election_2012.set("10", "blue") // Delaware
-election_2012.set("11", "blue") // District of Columbia
-election_2012.set("12", "blue") // Florida
-election_2012.set("13", "red")  // Georgia
-election_2012.set("15", "blue") // Hawaii
-election_2012.set("16", "red")  // Idaho
-election_2012.set("17", "blue") // Illinois
-election_2012.set("18", "red")  // Indiana
-election_2012.set("19", "blue") // Iowa
-election_2012.set("20", "red")  // Kansas
-election_2012.set("21", "red")  // Kentucky
-election_2012.set("22", "red")  // Louisiana
-election_2012.set("23", "blue") // Maine
-election_2012.set("24", "blue") // Maryland
-election_2012.set("25", "blue") // Massachusetts
-election_2012.set("26", "blue") // Michigan
-election_2012.set("27", "blue") // Minnesota
-election_2012.set("28", "red")  // Mississippi
-election_2012.set("29", "red")  // Missouri
-election_2012.set("30", "red")  // Montana
-election_2012.set("31", "red")  // Nebraska
-election_2012.set("32", "blue") // Nevada
-election_2012.set("33", "blue") // New Hampshire
-election_2012.set("34", "blue") // New Jersey
-election_2012.set("35", "blue") // New Mexico
-election_2012.set("36", "blue") // New York
-election_2012.set("37", "red")  // North Carolina
-election_2012.set("38", "red")  // North Dakota
-election_2012.set("39", "blue") // Ohio
-election_2012.set("40", "red")  // Oklahoma
-election_2012.set("41", "blue") // Oregon
-election_2012.set("42", "blue") // Pennsylvania
-election_2012.set("44", "blue") // Rhode Island
-election_2012.set("45", "red")  // South Carolina
-election_2012.set("46", "red")  // South Dakota
-election_2012.set("47", "red")  // Tennessee
-election_2012.set("48", "red")  // Texas
-election_2012.set("49", "red")  // Utah
-election_2012.set("50", "blue") // Vermont
-election_2012.set("51", "blue") // Virginia
-election_2012.set("53", "blue") // Washington
-election_2012.set("54", "red")  // West Virginia
-election_2012.set("55", "blue") // Wisconsin
-election_2012.set("56", "red")  // Wyoming
-
-var election_2016 = d3.map();
-election_2016.set("01", "red")  // Alabama
-election_2016.set("02", "red")  // Alaska
-election_2016.set("04", "red")  // Arizona
-election_2016.set("05", "red")  // Arkansas
-election_2016.set("06", "blue") // California
-election_2016.set("08", "blue") // Colorado
-election_2016.set("09", "blue") // Connecticut
-election_2016.set("10", "blue") // Delaware
-election_2016.set("11", "blue") // District of Columbia
-election_2016.set("12", "red")  // Florida
-election_2016.set("13", "red")  // Georgia
-election_2016.set("15", "blue") // Hawaii
-election_2016.set("16", "red")  // Idaho
-election_2016.set("17", "blue") // Illinois
-election_2016.set("18", "blue") // Indiana
-election_2016.set("19", "red")  // Iowa
-election_2016.set("20", "red")  // Kansas
-election_2016.set("21", "red")  // Kentucky
-election_2016.set("22", "red")  // Louisiana
-election_2016.set("23", "red")  // Maine
-election_2016.set("24", "blue") // Maryland
-election_2016.set("25", "blue") // Massachusetts
-election_2016.set("26", "red")  // Michigan
-election_2016.set("27", "blue") // Minnesota
-election_2016.set("28", "red")  // Mississippi
-election_2016.set("29", "red")  // Missouri
-election_2016.set("30", "red")  // Montana
-election_2016.set("31", "red")  // Nebraska
-election_2016.set("32", "blue") // Nevada
-election_2016.set("33", "blue") // New Hampshire
-election_2016.set("34", "blue") // New Jersey
-election_2016.set("35", "blue") // New Mexico
-election_2016.set("36", "blue") // New York
-election_2016.set("37", "red")  // North Carolina
-election_2016.set("38", "red")  // North Dakota
-election_2016.set("39", "red")  // Ohio
-election_2016.set("40", "red")  // Oklahoma
-election_2016.set("41", "blue") // Oregon
-election_2016.set("42", "red")  // Pennsylvania
-election_2016.set("44", "blue") // Rhode Island
-election_2016.set("45", "red")  // South Carolina
-election_2016.set("46", "red")  // South Dakota
-election_2016.set("47", "red")  // Tennessee
-election_2016.set("48", "red")  // Texas
-election_2016.set("49", "red")  // Utah
-election_2016.set("50", "blue") // Vermont
-election_2016.set("51", "blue") // Virginia
-election_2016.set("53", "blue") // Washington
-election_2016.set("54", "red")  // West Virginia
-election_2016.set("55", "red")  // Wisconsin
-election_2016.set("56", "red")  // Wyoming
+var from_file_dem_map = d3.map();
+var from_file_rep_map = d3.map();
+var from_file_tot_map = d3.map();
+var from_file_frd_map = d3.map();
+var from_file_frr_map = d3.map();
+var from_file_var_map = d3.map();
+var from_file_evs_map = d3.map();
 
 var path = d3.geoPath();
 
@@ -478,10 +223,27 @@ var g = svg.append("g")
 
 d3.queue()
     .defer(d3.json, "https://d3js.org/us-10m.v1.json")
+    .defer(d3.csv, "vote_totals.csv", function(d) {
+
+      index = make_index(d.year, d.id);
+      from_file_dem_map.set(index, d.democratic);
+      from_file_rep_map.set(index, d.republican);
+      from_file_tot_map.set(index, d.total);
+      from_file_frd_map.set(index, d.fraction_democratic);
+      from_file_frr_map.set(index, d.fraction_republican);
+      from_file_var_map.set(index, d.variance);
+      from_file_evs_map.set(index, d.electoral_votes);
+    })
     .await(ready);
 
 function ready(error, us) {
+
   if (error) throw error;
+  our_us = us;
+  do_draw(us, current_year);
+}
+
+function do_draw(us, year) {
 
   svg.append("g")
       .attr("class", "states")
@@ -490,19 +252,26 @@ function ready(error, us) {
     .enter().append("path")
       .attr("fill", function(d) {
 
-          my_color = election_2000.get(d.id);
-          if (("blue" != my_color) && ("red" != my_color))
-              my_color = "green";
+          index = make_index(year, d.id);
+          fraction_republican = from_file_frr_map.get(index);
+          my_color = "green";
+
+          if (fraction_republican < 0.5)
+            my_color = "blue";
+          else
+            my_color = "red";
           return my_color;
        })
-      .attr("d", path)
-    .append("title")
-      .text(function(d) { return d.rate + "%"; });
+      .attr("d", path);
 
   svg.append("path")
       .datum(topojson.mesh(us, us.objects.states, function(a, b) { return a !== b; }))
       .attr("class", "states")
       .attr("d", path);
+}
+
+function make_index(year, id) {
+  return (+year) * 100 + (+id);
 }
 
 </script>
