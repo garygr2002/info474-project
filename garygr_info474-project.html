@@ -11,23 +11,23 @@
       <form>
         <div>
           <input type="radio" id="id_2000"
-          name="year_choice" value="value_2000", onclick="default_year = '2000'; do_draw(our_us, default_year);", checked="checked">
+          name="year_choice" value="value_2000" onclick="default_year = '2000'; update_display(our_us, default_year);"/>
           <label for="id_2000">2000</label>
 
           <input type="radio" id="id_2004"
-          name="year_choice" value="value_2004", onclick="default_year = '2004'; do_draw(our_us, default_year);">
+          name="year_choice" value="value_2004" onclick="default_year = '2004'; update_display(our_us, default_year);"/>
           <label for="id_2004">2004</label>
 
           <input type="radio" id="id_2008"
-          name="year_choice" value="value_2008", onclick="default_year = '2008'; do_draw(our_us, default_year);">
+          name="year_choice" value="value_2008" onclick="default_year = '2008'; update_display(our_us, default_year);"/>
           <label for="id_2008">2008</label>
 
           <input type="radio" id="id_2012"
-          name="year_choice" value="value_2012", onclick="default_year = '2012'; do_draw(our_us, default_year);">
+          name="year_choice" value="value_2012" onclick="default_year = '2012'; update_display(our_us, default_year);"/>
           <label for="id_2012">2012</label>
 
           <input type="radio" id="id_2016"
-          name="year_choice" value="value_2016", onclick="default_year = '2016'; do_draw(our_us, default_year);">
+          name="year_choice" value="value_2016" onclick="default_year = '2016'; update_display(our_us, default_year);"/>
           <label for="id_2012">2016</label>
         </div>
       </form>
@@ -202,7 +202,10 @@
 <script>
 
 var current_year = "2000";
+var democratic_evs = 0;
 var our_us;
+var republican_evs = 0;
+
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
     height = +svg.attr("height");
@@ -236,13 +239,6 @@ d3.queue()
     })
     .await(ready);
 
-function ready(error, us) {
-
-  if (error) throw error;
-  our_us = us;
-  do_draw(us, current_year);
-}
-
 function do_draw(us, year) {
 
   svg.append("g")
@@ -274,6 +270,197 @@ function make_index(year, id) {
   return (+year) * 100 + (+id);
 }
 
+const numberWithCommas = (x) => {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+function precisionRound(number, precision) {
+  var factor = Math.pow(10, precision);
+  return Math.round(number * factor) / factor;
+}
+
+function ready(error, us) {
+
+  if (error) throw error;
+  our_us = us;
+  document.getElementById("id_2000").click();
+}
+
+function update_display(us, year) {
+
+  do_draw(us, year);
+  update_mean();
+  update_votes();
+}
+
+function update_mean() {
+
+  update_state_mean("01", "alabama");
+  update_state_mean("02", "alaska");
+  update_state_mean("04", "arizona");
+  update_state_mean("05", "arkansas");
+  update_state_mean("06", "california");
+  update_state_mean("08", "colorado");
+  update_state_mean("09", "connecticut");
+  update_state_mean("10", "delaware");
+  update_state_mean("11", "dc");
+  update_state_mean("12", "florida");
+  update_state_mean("13", "georgia");
+  update_state_mean("15", "hawaii");
+  update_state_mean("16", "idaho");
+  update_state_mean("17", "illinois");
+  update_state_mean("18", "indiana");
+  update_state_mean("19", "iowa");
+  update_state_mean("20", "kansas");
+  update_state_mean("21", "kentucky");
+  update_state_mean("22", "louisiana");
+  update_state_mean("23", "maine");
+  update_state_mean("24", "maryland");
+  update_state_mean("25", "massachusetts");
+  update_state_mean("26", "michigan");
+  update_state_mean("27", "minnesota");
+  update_state_mean("28", "mississippi");
+  update_state_mean("29", "missouri");
+  update_state_mean("30", "montana");
+  update_state_mean("31", "nebraska");
+  update_state_mean("32", "nevada");
+  update_state_mean("33", "new_hampshire");
+  update_state_mean("34", "new_jersey");
+  update_state_mean("35", "new_mexico");
+  update_state_mean("36", "new_york");
+  update_state_mean("37", "north_carolina");
+  update_state_mean("38", "north_dakota");
+  update_state_mean("39", "ohio");
+  update_state_mean("40", "oklahoma");
+  update_state_mean("41", "oregon");
+  update_state_mean("42", "pennsylvania");
+  update_state_mean("44", "rhode_island");
+  update_state_mean("45", "south_carolina");
+  update_state_mean("46", "south_dakota");
+  update_state_mean("47", "tennessee");
+  update_state_mean("48", "texas");
+  update_state_mean("49", "utah");
+  update_state_mean("50", "vermont");
+  update_state_mean("51", "virginia");
+  update_state_mean("53", "washington");
+  update_state_mean("54", "west_virginia");
+  update_state_mean("55", "wisconsin");
+  update_state_mean("56", "wyoming");
+}
+
+function update_state_mean(id, state) {
+
+  index = make_index(default_year, id);
+  state = state + "_";
+
+  document.getElementById(state + "mean").value =
+    precisionRound(from_file_frr_map.get(index), 4);
+}
+
+function update_state_votes(id, state) {
+
+  index = make_index(default_year, id);
+  state = state + "_";
+
+  document.getElementById(state + "dem_votes").innerHTML =
+    numberWithCommas(from_file_dem_map.get(index));
+  document.getElementById(state + "rep_votes").innerHTML =
+    numberWithCommas(from_file_rep_map.get(index));
+
+  evs = +from_file_evs_map.get(index);
+  if (from_file_frr_map.get(index) < 0.5) {
+
+    democratic_evs += evs;
+    document.getElementById(state + "dem_evs").innerHTML =
+      numberWithCommas(evs);
+    document.getElementById(state + "rep_evs").innerHTML =
+      numberWithCommas(0);
+  }
+
+  else {
+
+    republican_evs += evs;
+    document.getElementById(state + "dem_evs").innerHTML =
+      numberWithCommas(0);
+    document.getElementById(state + "rep_evs").innerHTML =
+      numberWithCommas(evs);
+  }
+}
+
+function update_votes() {
+
+  democratic_evs = 0;
+  republican_evs = 0;
+
+  update_state_votes("01", "alabama");
+  update_state_votes("02", "alaska");
+  update_state_votes("04", "arizona");
+  update_state_votes("05", "arkansas");
+  update_state_votes("06", "california");
+  update_state_votes("08", "colorado");
+  update_state_votes("09", "connecticut");
+  update_state_votes("10", "delaware");
+  update_state_votes("11", "d_c");
+  update_state_votes("12", "florida");
+  update_state_votes("13", "georgia");
+  update_state_votes("15", "hawaii");
+  update_state_votes("16", "idaho");
+  update_state_votes("17", "illinois");
+  update_state_votes("18", "indiana");
+  update_state_votes("19", "iowa");
+  update_state_votes("20", "kansas");
+  update_state_votes("21", "kentucky");
+  update_state_votes("22", "louisiana");
+  update_state_votes("23", "maine");
+  update_state_votes("24", "maryland");
+  update_state_votes("25", "massachusetts");
+  update_state_votes("26", "michigan");
+  update_state_votes("27", "minnesota");
+  update_state_votes("28", "mississippi");
+  update_state_votes("29", "missouri");
+  update_state_votes("30", "montana");
+  update_state_votes("31", "nebraska");
+  update_state_votes("32", "nevada");
+  update_state_votes("33", "new_hampshire");
+  update_state_votes("34", "new_jersey");
+  update_state_votes("35", "new_mexico");
+  update_state_votes("36", "new_york");
+  update_state_votes("37", "north_carolina");
+  update_state_votes("38", "north_dakota");
+  update_state_votes("39", "ohio");
+  update_state_votes("40", "oklahoma");
+  update_state_votes("41", "oregon");
+  update_state_votes("42", "pennsylvania");
+  update_state_votes("44", "rhode_island");
+  update_state_votes("45", "south_carolina");
+  update_state_votes("46", "south_dakota");
+  update_state_votes("47", "tennessee");
+  update_state_votes("48", "texas");
+  update_state_votes("49", "utah");
+  update_state_votes("50", "vermont");
+  update_state_votes("51", "virginia");
+  update_state_votes("53", "washington");
+  update_state_votes("54", "west_virginia");
+  update_state_votes("55", "wisconsin");
+  update_state_votes("56", "wyoming");
+
+  index = make_index(default_year, "00");
+  country = "united_states_";
+
+  document.getElementById(country + "dem_votes").innerHTML =
+    numberWithCommas(from_file_dem_map.get(index));
+  document.getElementById(country + "rep_votes").innerHTML =
+    numberWithCommas(from_file_rep_map.get(index));
+
+  document.getElementById(country + "dem_evs").innerHTML =
+    numberWithCommas(democratic_evs);
+  document.getElementById(country + "rep_evs").innerHTML =
+    numberWithCommas(republican_evs);
+
+  democratic_evs = 0;
+  republican_evs = 0;
+}
+
 </script>
 <p><button type="button">Run the Simulation!</button></p><p><button>Reset to Actual Results for the Selected Year</button></p>
 <table border="1">
@@ -283,367 +470,367 @@ function make_index(year, id) {
 </tr>
 <tr>
   <td>Alabama</td>
-  <td><label id=alabama_dem_votes>0</label></td>
-  <td><label id=alabama_rep_votes>0</label></td>
-  <td><label id=alabama_dem_evs>0</label></td>
-  <td><label id=alabama_rep_evs>0</label></td>
+  <td align="right"><label id=alabama_dem_votes>0</label></td>
+  <td align="right"><label id=alabama_rep_votes>0</label></td>
+  <td align="right"><label id=alabama_dem_evs>0</label></td>
+  <td align="right"><label id=alabama_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Alaska</td>
-  <td><label id=alaska_dem_votes>0</label></td>
-  <td><label id=alaska_rep_votes>0</label></td>
-  <td><label id=alaska_dem_evs>0</label></td>
-  <td><label id=alaska_rep_evs>0</label></td>
+  <td align="right"><label id=alaska_dem_votes>0</label></td>
+  <td align="right"><label id=alaska_rep_votes>0</label></td>
+  <td align="right"><label id=alaska_dem_evs>0</label></td>
+  <td align="right"><label id=alaska_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Arizona</td>
-  <td><label id=arizona_dem_votes>0</label></td>
-  <td><label id=arizona_rep_votes>0</label></td>
-  <td><label id=arizona_dem_evs>0</label></td>
-  <td><label id=arizona_rep_evs>0</label></td>
+  <td align="right"><label id=arizona_dem_votes>0</label></td>
+  <td align="right"><label id=arizona_rep_votes>0</label></td>
+  <td align="right"><label id=arizona_dem_evs>0</label></td>
+  <td align="right"><label id=arizona_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Arkansas</td>
-  <td><label id=arkansas_dem_votes>0</label></td>
-  <td><label id=arkansas_rep_votes>0</label></td>
-  <td><label id=arkansas_dem_evs>0</label></td>
-  <td><label id=arkansas_rep_evs>0</label></td>
+  <td align="right"><label id=arkansas_dem_votes>0</label></td>
+  <td align="right"><label id=arkansas_rep_votes>0</label></td>
+  <td align="right"><label id=arkansas_dem_evs>0</label></td>
+  <td align="right"><label id=arkansas_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>California</td>
-  <td><label id=california_dem_votes>0</label></td>
-  <td><label id=california_rep_votes>0</label></td>
-  <td><label id=california_dem_evs>0</label></td>
-  <td><label id=california_rep_evs>0</label></td>
+  <td align="right"><label id=california_dem_votes>0</label></td>
+  <td align="right"><label id=california_rep_votes>0</label></td>
+  <td align="right"><label id=california_dem_evs>0</label></td>
+  <td align="right"><label id=california_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Colorado</td>
-  <td><label id=colorado_dem_votes>0</label></td>
-  <td><label id=colorado_rep_votes>0</label></td>
-  <td><label id=colorado_dem_evs>0</label></td>
-  <td><label id=colorado_rep_evs>0</label></td>
+  <td align="right"><label id=colorado_dem_votes>0</label></td>
+  <td align="right"><label id=colorado_rep_votes>0</label></td>
+  <td align="right"><label id=colorado_dem_evs>0</label></td>
+  <td align="right"><label id=colorado_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Connecticut</td>
-  <td><label id=connecticut_dem_votes>0</label></td>
-  <td><label id=connecticut_rep_votes>0</label></td>
-  <td><label id=connecticut_dem_evs>0</label></td>
-  <td><label id=connecticut_rep_evs>0</label></td>
+  <td align="right"><label id=connecticut_dem_votes>0</label></td>
+  <td align="right"><label id=connecticut_rep_votes>0</label></td>
+  <td align="right"><label id=connecticut_dem_evs>0</label></td>
+  <td align="right"><label id=connecticut_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Delaware</td>
-  <td><label id=delaware_dem_votes>0</label></td>
-  <td><label id=delaware_rep_votes>0</label></td>
-  <td><label id=delaware_dem_evs>0</label></td>
-  <td><label id=delaware_rep_evs>0</label></td>
+  <td align="right"><label id=delaware_dem_votes>0</label></td>
+  <td align="right"><label id=delaware_rep_votes>0</label></td>
+  <td align="right"><label id=delaware_dem_evs>0</label></td>
+  <td align="right"><label id=delaware_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>D.C.</td>
-  <td><label id=d_c_dem_votes>0</label></td>
-  <td><label id=d_c_rep_votes>0</label></td>
-  <td><label id=d_c_dem_evs>0</label></td>
-  <td><label id=d_c_rep_evs>0</label></td>
+  <td align="right"><label id=d_c_dem_votes>0</label></td>
+  <td align="right"><label id=d_c_rep_votes>0</label></td>
+  <td align="right"><label id=d_c_dem_evs>0</label></td>
+  <td align="right"><label id=d_c_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Florida</td>
-  <td><label id=florida_dem_votes>0</label></td>
-  <td><label id=florida_rep_votes>0</label></td>
-  <td><label id=florida_dem_evs>0</label></td>
-  <td><label id=florida_rep_evs>0</label></td>
+  <td align="right"><label id=florida_dem_votes>0</label></td>
+  <td align="right"><label id=florida_rep_votes>0</label></td>
+  <td align="right"><label id=florida_dem_evs>0</label></td>
+  <td align="right"><label id=florida_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Georgia</td>
-  <td><label id=georgia_dem_votes>0</label></td>
-  <td><label id=georgia_rep_votes>0</label></td>
-  <td><label id=georgia_dem_evs>0</label></td>
-  <td><label id=georgia_rep_evs>0</label></td>
+  <td align="right"><label id=georgia_dem_votes>0</label></td>
+  <td align="right"><label id=georgia_rep_votes>0</label></td>
+  <td align="right"><label id=georgia_dem_evs>0</label></td>
+  <td align="right"><label id=georgia_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Hawaii</td>
-  <td><label id=hawaii_dem_votes>0</label></td>
-  <td><label id=hawaii_rep_votes>0</label></td>
-  <td><label id=hawaii_dem_evs>0</label></td>
-  <td><label id=hawaii_rep_evs>0</label></td>
+  <td align="right"><label id=hawaii_dem_votes>0</label></td>
+  <td align="right"><label id=hawaii_rep_votes>0</label></td>
+  <td align="right"><label id=hawaii_dem_evs>0</label></td>
+  <td align="right"><label id=hawaii_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Idaho</td>
-  <td><label id=idaho_dem_votes>0</label></td>
-  <td><label id=idaho_rep_votes>0</label></td>
-  <td><label id=idaho_dem_evs>0</label></td>
-  <td><label id=idaho_rep_evs>0</label></td>
+  <td align="right"><label id=idaho_dem_votes>0</label></td>
+  <td align="right"><label id=idaho_rep_votes>0</label></td>
+  <td align="right"><label id=idaho_dem_evs>0</label></td>
+  <td align="right"><label id=idaho_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Illinois</td>
-  <td><label id=illinois_dem_votes>0</label></td>
-  <td><label id=illinois_rep_votes>0</label></td>
-  <td><label id=illinois_dem_evs>0</label></td>
-  <td><label id=illinois_rep_evs>0</label></td>
+  <td align="right"><label id=illinois_dem_votes>0</label></td>
+  <td align="right"><label id=illinois_rep_votes>0</label></td>
+  <td align="right"><label id=illinois_dem_evs>0</label></td>
+  <td align="right"><label id=illinois_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Indiana</td>
-  <td><label id=indiana_dem_votes>0</label></td>
-  <td><label id=indiana_rep_votes>0</label></td>
-  <td><label id=indiana_dem_evs>0</label></td>
-  <td><label id=indiana_rep_evs>0</label></td>
+  <td align="right"><label id=indiana_dem_votes>0</label></td>
+  <td align="right"><label id=indiana_rep_votes>0</label></td>
+  <td align="right"><label id=indiana_dem_evs>0</label></td>
+  <td align="right"><label id=indiana_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Iowa</td>
-  <td><label id=iowa_dem_votes>0</label></td>
-  <td><label id=iowa_rep_votes>0</label></td>
-  <td><label id=iowa_dem_evs>0</label></td>
-  <td><label id=iowa_rep_evs>0</label></td>
+  <td align="right"><label id=iowa_dem_votes>0</label></td>
+  <td align="right"><label id=iowa_rep_votes>0</label></td>
+  <td align="right"><label id=iowa_dem_evs>0</label></td>
+  <td align="right"><label id=iowa_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Kansas</td>
-  <td><label id=kansas_dem_votes>0</label></td>
-  <td><label id=kansas_rep_votes>0</label></td>
-  <td><label id=kansas_dem_evs>0</label></td>
-  <td><label id=kansas_rep_evs>0</label></td>
+  <td align="right"><label id=kansas_dem_votes>0</label></td>
+  <td align="right"><label id=kansas_rep_votes>0</label></td>
+  <td align="right"><label id=kansas_dem_evs>0</label></td>
+  <td align="right"><label id=kansas_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Kentucky</td>
-  <td><label id=kentucky_dem_votes>0</label></td>
-  <td><label id=kentucky_rep_votes>0</label></td>
-  <td><label id=kentucky_dem_evs>0</label></td>
-  <td><label id=kentucky_rep_evs>0</label></td>
+  <td align="right"><label id=kentucky_dem_votes>0</label></td>
+  <td align="right"><label id=kentucky_rep_votes>0</label></td>
+  <td align="right"><label id=kentucky_dem_evs>0</label></td>
+  <td align="right"><label id=kentucky_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Louisiana</td>
-  <td><label id=louisiana_dem_votes>0</label></td>
-  <td><label id=louisiana_rep_votes>0</label></td>
-  <td><label id=louisiana_dem_evs>0</label></td>
-  <td><label id=louisiana_rep_evs>0</label></td>
+  <td align="right"><label id=louisiana_dem_votes>0</label></td>
+  <td align="right"><label id=louisiana_rep_votes>0</label></td>
+  <td align="right"><label id=louisiana_dem_evs>0</label></td>
+  <td align="right"><label id=louisiana_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Maine</td>
-  <td><label id=maine_dem_votes>0</label></td>
-  <td><label id=maine_rep_votes>0</label></td>
-  <td><label id=maine_dem_evs>0</label></td>
-  <td><label id=maine_rep_evs>0</label></td>
+  <td align="right"><label id=maine_dem_votes>0</label></td>
+  <td align="right"><label id=maine_rep_votes>0</label></td>
+  <td align="right"><label id=maine_dem_evs>0</label></td>
+  <td align="right"><label id=maine_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Maryland</td>
-  <td><label id=maryland_dem_votes>0</label></td>
-  <td><label id=maryland_rep_votes>0</label></td>
-  <td><label id=maryland_dem_evs>0</label></td>
-  <td><label id=maryland_rep_evs>0</label></td>
+  <td align="right"><label id=maryland_dem_votes>0</label></td>
+  <td align="right"><label id=maryland_rep_votes>0</label></td>
+  <td align="right"><label id=maryland_dem_evs>0</label></td>
+  <td align="right"><label id=maryland_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Massachusetts</td>
-  <td><label id=massachusetts_dem_votes>0</label></td>
-  <td><label id=massachusetts_rep_votes>0</label></td>
-  <td><label id=massachusetts_dem_evs>0</label></td>
-  <td><label id=massachusetts_rep_evs>0</label></td>
+  <td align="right"><label id=massachusetts_dem_votes>0</label></td>
+  <td align="right"><label id=massachusetts_rep_votes>0</label></td>
+  <td align="right"><label id=massachusetts_dem_evs>0</label></td>
+  <td align="right"><label id=massachusetts_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Michigan</td>
-  <td><label id=michigan_dem_votes>0</label></td>
-  <td><label id=michigan_rep_votes>0</label></td>
-  <td><label id=michigan_dem_evs>0</label></td>
-  <td><label id=michigan_rep_evs>0</label></td>
+  <td align="right"><label id=michigan_dem_votes>0</label></td>
+  <td align="right"><label id=michigan_rep_votes>0</label></td>
+  <td align="right"><label id=michigan_dem_evs>0</label></td>
+  <td align="right"><label id=michigan_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Minnesota</td>
-  <td><label id=minnesota_dem_votes>0</label></td>
-  <td><label id=minnesota_rep_votes>0</label></td>
-  <td><label id=minnesota_dem_evs>0</label></td>
-  <td><label id=minnesota_rep_evs>0</label></td>
+  <td align="right"><label id=minnesota_dem_votes>0</label></td>
+  <td align="right"><label id=minnesota_rep_votes>0</label></td>
+  <td align="right"><label id=minnesota_dem_evs>0</label></td>
+  <td align="right"><label id=minnesota_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Mississippi</td>
-  <td><label id=mississippi_dem_votes>0</label></td>
-  <td><label id=mississippi_rep_votes>0</label></td>
-  <td><label id=mississippi_dem_evs>0</label></td>
-  <td><label id=mississippi_rep_evs>0</label></td>
+  <td align="right"><label id=mississippi_dem_votes>0</label></td>
+  <td align="right"><label id=mississippi_rep_votes>0</label></td>
+  <td align="right"><label id=mississippi_dem_evs>0</label></td>
+  <td align="right"><label id=mississippi_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Missouri</td>
-  <td><label id=missouri_dem_votes>0</label></td>
-  <td><label id=missouri_rep_votes>0</label></td>
-  <td><label id=missouri_dem_evs>0</label></td>
-  <td><label id=missouri_rep_evs>0</label></td>
+  <td align="right"><label id=missouri_dem_votes>0</label></td>
+  <td align="right"><label id=missouri_rep_votes>0</label></td>
+  <td align="right"><label id=missouri_dem_evs>0</label></td>
+  <td align="right"><label id=missouri_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Montana</td>
-  <td><label id=montana_dem_votes>0</label></td>
-  <td><label id=montana_rep_votes>0</label></td>
-  <td><label id=montana_dem_evs>0</label></td>
-  <td><label id=montana_rep_evs>0</label></td>
+  <td align="right"><label id=montana_dem_votes>0</label></td>
+  <td align="right"><label id=montana_rep_votes>0</label></td>
+  <td align="right"><label id=montana_dem_evs>0</label></td>
+  <td align="right"><label id=montana_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Nebraska</td>
-  <td><label id=nebraska_dem_votes>0</label></td>
-  <td><label id=nebraska_rep_votes>0</label></td>
-  <td><label id=nebraska_dem_evs>0</label></td>
-  <td><label id=nebraska_rep_evs>0</label></td>
+  <td align="right"><label id=nebraska_dem_votes>0</label></td>
+  <td align="right"><label id=nebraska_rep_votes>0</label></td>
+  <td align="right"><label id=nebraska_dem_evs>0</label></td>
+  <td align="right"><label id=nebraska_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Nevada</td>
-  <td><label id=nevada_dem_votes>0</label></td>
-  <td><label id=nevada_rep_votes>0</label></td>
-  <td><label id=nevada_dem_evs>0</label></td>
-  <td><label id=nevada_rep_evs>0</label></td>
+  <td align="right"><label id=nevada_dem_votes>0</label></td>
+  <td align="right"><label id=nevada_rep_votes>0</label></td>
+  <td align="right"><label id=nevada_dem_evs>0</label></td>
+  <td align="right"><label id=nevada_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>New Hampshire</td>
-  <td><label id=new_hampshire_dem_votes>0</label></td>
-  <td><label id=new_hampshire_rep_votes>0</label></td>
-  <td><label id=new_hampshire_dem_evs>0</label></td>
-  <td><label id=new_hampshire_rep_evs>0</label></td>
+  <td align="right"><label id=new_hampshire_dem_votes>0</label></td>
+  <td align="right"><label id=new_hampshire_rep_votes>0</label></td>
+  <td align="right"><label id=new_hampshire_dem_evs>0</label></td>
+  <td align="right"><label id=new_hampshire_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>New Jersey</td>
-  <td><label id=new_jersey_dem_votes>0</label></td>
-  <td><label id=new_jersey_rep_votes>0</label></td>
-  <td><label id=new_jersey_dem_evs>0</label></td>
-  <td><label id=new_jersey_rep_evs>0</label></td>
+  <td align="right"><label id=new_jersey_dem_votes>0</label></td>
+  <td align="right"><label id=new_jersey_rep_votes>0</label></td>
+  <td align="right"><label id=new_jersey_dem_evs>0</label></td>
+  <td align="right"><label id=new_jersey_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>New Mexico</td>
-  <td><label id=new_mexico_dem_votes>0</label></td>
-  <td><label id=new_mexico_rep_votes>0</label></td>
-  <td><label id=new_mexico_dem_evs>0</label></td>
-  <td><label id=new_mexico_rep_evs>0</label></td>
+  <td align="right"><label id=new_mexico_dem_votes>0</label></td>
+  <td align="right"><label id=new_mexico_rep_votes>0</label></td>
+  <td align="right"><label id=new_mexico_dem_evs>0</label></td>
+  <td align="right"><label id=new_mexico_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>New York</td>
-  <td><label id=new_york_dem_votes>0</label></td>
-  <td><label id=new_york_rep_votes>0</label></td>
-  <td><label id=new_york_dem_evs>0</label></td>
-  <td><label id=new_york_rep_evs>0</label></td>
+  <td align="right"><label id=new_york_dem_votes>0</label></td>
+  <td align="right"><label id=new_york_rep_votes>0</label></td>
+  <td align="right"><label id=new_york_dem_evs>0</label></td>
+  <td align="right"><label id=new_york_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>North Carolina</td>
-  <td><label id=north_carolina_dem_votes>0</label></td>
-  <td><label id=north_carolina_rep_votes>0</label></td>
-  <td><label id=north_carolina_dem_evs>0</label></td>
-  <td><label id=north_carolina_rep_evs>0</label></td>
+  <td align="right"><label id=north_carolina_dem_votes>0</label></td>
+  <td align="right"><label id=north_carolina_rep_votes>0</label></td>
+  <td align="right"><label id=north_carolina_dem_evs>0</label></td>
+  <td align="right"><label id=north_carolina_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>North Dakota</td>
-  <td><label id=north_dakota_dem_votes>0</label></td>
-  <td><label id=north_dakota_rep_votes>0</label></td>
-  <td><label id=north_dakota_dem_evs>0</label></td>
-  <td><label id=north_dakota_rep_evs>0</label></td>
+  <td align="right"><label id=north_dakota_dem_votes>0</label></td>
+  <td align="right"><label id=north_dakota_rep_votes>0</label></td>
+  <td align="right"><label id=north_dakota_dem_evs>0</label></td>
+  <td align="right"><label id=north_dakota_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Ohio</td>
-  <td><label id=ohio_dem_votes>0</label></td>
-  <td><label id=ohio_rep_votes>0</label></td>
-  <td><label id=ohio_dem_evs>0</label></td>
-  <td><label id=ohio_rep_evs>0</label></td>
+  <td align="right"><label id=ohio_dem_votes>0</label></td>
+  <td align="right"><label id=ohio_rep_votes>0</label></td>
+  <td align="right"><label id=ohio_dem_evs>0</label></td>
+  <td align="right"><label id=ohio_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Oklahoma</td>
-  <td><label id=oklahoma_dem_votes>0</label></td>
-  <td><label id=oklahoma_rep_votes>0</label></td>
-  <td><label id=oklahoma_dem_evs>0</label></td>
-  <td><label id=oklahoma_rep_evs>0</label></td>
+  <td align="right"><label id=oklahoma_dem_votes>0</label></td>
+  <td align="right"><label id=oklahoma_rep_votes>0</label></td>
+  <td align="right"><label id=oklahoma_dem_evs>0</label></td>
+  <td align="right"><label id=oklahoma_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Oregon</td>
-  <td><label id=oregon_dem_votes>0</label></td>
-  <td><label id=oregon_rep_votes>0</label></td>
-  <td><label id=oregon_dem_evs>0</label></td>
-  <td><label id=oregon_rep_evs>0</label></td>
+  <td align="right"><label id=oregon_dem_votes>0</label></td>
+  <td align="right"><label id=oregon_rep_votes>0</label></td>
+  <td align="right"><label id=oregon_dem_evs>0</label></td>
+  <td align="right"><label id=oregon_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Pennsylvania</td>
-  <td><label id=pennsylvania_dem_votes>0</label></td>
-  <td><label id=pennsylvania_rep_votes>0</label></td>
-  <td><label id=pennsylvania_dem_evs>0</label></td>
-  <td><label id=pennsylvania_rep_evs>0</label></td>
+  <td align="right"><label id=pennsylvania_dem_votes>0</label></td>
+  <td align="right"><label id=pennsylvania_rep_votes>0</label></td>
+  <td align="right"><label id=pennsylvania_dem_evs>0</label></td>
+  <td align="right"><label id=pennsylvania_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Rhode Island</td>
-  <td><label id=rhode_island_dem_votes>0</label></td>
-  <td><label id=rhode_island_rep_votes>0</label></td>
-  <td><label id=rhode_island_dem_evs>0</label></td>
-  <td><label id=rhode_island_rep_evs>0</label></td>
+  <td align="right"><label id=rhode_island_dem_votes>0</label></td>
+  <td align="right"><label id=rhode_island_rep_votes>0</label></td>
+  <td align="right"><label id=rhode_island_dem_evs>0</label></td>
+  <td align="right"><label id=rhode_island_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>South Carolina</td>
-  <td><label id=south_carolina_dem_votes>0</label></td>
-  <td><label id=south_carolina_rep_votes>0</label></td>
-  <td><label id=south_carolina_dem_evs>0</label></td>
-  <td><label id=south_carolina_rep_evs>0</label></td>
+  <td align="right"><label id=south_carolina_dem_votes>0</label></td>
+  <td align="right"><label id=south_carolina_rep_votes>0</label></td>
+  <td align="right"><label id=south_carolina_dem_evs>0</label></td>
+  <td align="right"><label id=south_carolina_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>South Dakota</td>
-  <td><label id=south_dakota_dem_votes>0</label></td>
-  <td><label id=south_dakota_rep_votes>0</label></td>
-  <td><label id=south_dakota_dem_evs>0</label></td>
-  <td><label id=south_dakota_rep_evs>0</label></td>
+  <td align="right"><label id=south_dakota_dem_votes>0</label></td>
+  <td align="right"><label id=south_dakota_rep_votes>0</label></td>
+  <td align="right"><label id=south_dakota_dem_evs>0</label></td>
+  <td align="right"><label id=south_dakota_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Tennessee</td>
-  <td><label id=tennessee_dem_votes>0</label></td>
-  <td><label id=tennessee_rep_votes>0</label></td>
-  <td><label id=tennessee_dem_evs>0</label></td>
-  <td><label id=tennessee_rep_evs>0</label></td>
+  <td align="right"><label id=tennessee_dem_votes>0</label></td>
+  <td align="right"><label id=tennessee_rep_votes>0</label></td>
+  <td align="right"><label id=tennessee_dem_evs>0</label></td>
+  <td align="right"><label id=tennessee_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Texas</td>
-  <td><label id=texas_dem_votes>0</label></td>
-  <td><label id=texas_rep_votes>0</label></td>
-  <td><label id=texas_dem_evs>0</label></td>
-  <td><label id=texas_rep_evs>0</label></td>
+  <td align="right"><label id=texas_dem_votes>0</label></td>
+  <td align="right"><label id=texas_rep_votes>0</label></td>
+  <td align="right"><label id=texas_dem_evs>0</label></td>
+  <td align="right"><label id=texas_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Utah</td>
-  <td><label id=utah_dem_votes>0</label></td>
-  <td><label id=utah_rep_votes>0</label></td>
-  <td><label id=utah_dem_evs>0</label></td>
-  <td><label id=utah_rep_evs>0</label></td>
+  <td align="right"><label id=utah_dem_votes>0</label></td>
+  <td align="right"><label id=utah_rep_votes>0</label></td>
+  <td align="right"><label id=utah_dem_evs>0</label></td>
+  <td align="right"><label id=utah_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Vermont</td>
-  <td><label id=vermont_dem_votes>0</label></td>
-  <td><label id=vermont_rep_votes>0</label></td>
-  <td><label id=vermont_dem_evs>0</label></td>
-  <td><label id=vermont_rep_evs>0</label></td>
+  <td align="right"><label id=vermont_dem_votes>0</label></td>
+  <td align="right"><label id=vermont_rep_votes>0</label></td>
+  <td align="right"><label id=vermont_dem_evs>0</label></td>
+  <td align="right"><label id=vermont_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Virginia</td>
-  <td><label id=virginia_dem_votes>0</label></td>
-  <td><label id=virginia_rep_votes>0</label></td>
-  <td><label id=virginia_dem_evs>0</label></td>
-  <td><label id=virginia_rep_evs>0</label></td>
+  <td align="right"><label id=virginia_dem_votes>0</label></td>
+  <td align="right"><label id=virginia_rep_votes>0</label></td>
+  <td align="right"><label id=virginia_dem_evs>0</label></td>
+  <td align="right"><label id=virginia_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Washington</td>
-  <td><label id=washington_dem_votes>0</label></td>
-  <td><label id=washington_rep_votes>0</label></td>
-  <td><label id=washington_dem_evs>0</label></td>
-  <td><label id=washington_rep_evs>0</label></td>
+  <td align="right"><label id=washington_dem_votes>0</label></td>
+  <td align="right"><label id=washington_rep_votes>0</label></td>
+  <td align="right"><label id=washington_dem_evs>0</label></td>
+  <td align="right"><label id=washington_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>West Virginia</td>
-  <td><label id=west_virginia_dem_votes>0</label></td>
-  <td><label id=west_virginia_rep_votes>0</label></td>
-  <td><label id=west_virginia_dem_evs>0</label></td>
-  <td><label id=west_virginia_rep_evs>0</label></td>
+  <td align="right"><label id=west_virginia_dem_votes>0</label></td>
+  <td align="right"><label id=west_virginia_rep_votes>0</label></td>
+  <td align="right"><label id=west_virginia_dem_evs>0</label></td>
+  <td align="right"><label id=west_virginia_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Wisconsin</td>
-  <td><label id=wisconsin_dem_votes>0</label></td>
-  <td><label id=wisconsin_rep_votes>0</label></td>
-  <td><label id=wisconsin_dem_evs>0</label></td>
-  <td><label id=wisconsin_rep_evs>0</label></td>
+  <td align="right"><label id=wisconsin_dem_votes>0</label></td>
+  <td align="right"><label id=wisconsin_rep_votes>0</label></td>
+  <td align="right"><label id=wisconsin_dem_evs>0</label></td>
+  <td align="right"><label id=wisconsin_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>Wyoming</td>
-  <td><label id=wyoming_dem_votes>0</label></td>
-  <td><label id=wyoming_rep_votes>0</label></td>
-  <td><label id=wyoming_dem_evs>0</label></td>
-  <td><label id=wyoming_rep_evs>0</label></td>
+  <td align="right"><label id=wyoming_dem_votes>0</label></td>
+  <td align="right"><label id=wyoming_rep_votes>0</label></td>
+  <td align="right"><label id=wyoming_dem_evs>0</label></td>
+  <td align="right"><label id=wyoming_rep_evs>0</label></td>
 </tr>
 <tr>
   <td>United States</td>
-  <td><label id=united_states_dem_votes>0</label></td>
-  <td><label id=united_states_rep_votes>0</label></td>
-  <td><label id=united_states_dem_evs>0</label></td>
-  <td><label id=united_states_rep_evs>0</label></td>
+  <td align="right"><label id=united_states_dem_votes>0</label></td>
+  <td align="right"><label id=united_states_rep_votes>0</label></td>
+  <td align="right"><label id=united_states_dem_evs>0</label></td>
+  <td align="right"><label id=united_states_rep_evs>0</label></td>
 </tr>
 </table>
 
