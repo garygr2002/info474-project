@@ -4,38 +4,42 @@
 <table style="width:100%">
   <tr>
     <th align="left">Please select the election to simulate:</th>
-    <th align="left">As desired, select a factor between 0.9 and 1.1 to apply to the variance of the beta distributions of all states:</th>
+    <th align="left">Shift all means 0.01 left or right by a constant amount:</th>
+    <th align="left">As desired, apply a factor to the variance of all states:</th>
   </tr>
   <tr>
     <td>
       <form>
         <div>
           <input type="radio" id="id_2000"
-          name="year_choice" value="value_2000" onclick="default_year = '2000'; update_display(our_us, default_year);"/>
+          name="year_choice" value="value_2000" onclick="current_year = '2000'; update_display_with_mean(our_us, current_year);"/>
           <label for="id_2000">2000</label>
 
           <input type="radio" id="id_2004"
-          name="year_choice" value="value_2004" onclick="default_year = '2004'; update_display(our_us, default_year);"/>
+          name="year_choice" value="value_2004" onclick="current_year = '2004'; update_display_with_mean(our_us, current_year);"/>
           <label for="id_2004">2004</label>
 
           <input type="radio" id="id_2008"
-          name="year_choice" value="value_2008" onclick="default_year = '2008'; update_display(our_us, default_year);"/>
+          name="year_choice" value="value_2008" onclick="current_year = '2008'; update_display_with_mean(our_us, current_year);"/>
           <label for="id_2008">2008</label>
 
           <input type="radio" id="id_2012"
-          name="year_choice" value="value_2012" onclick="default_year = '2012'; update_display(our_us, default_year);"/>
+          name="year_choice" value="value_2012" onclick="current_year = '2012'; update_display_with_mean(our_us, current_year);"/>
           <label for="id_2012">2012</label>
 
           <input type="radio" id="id_2016"
-          name="year_choice" value="value_2016" onclick="default_year = '2016'; update_display(our_us, default_year);"/>
+          name="year_choice" value="value_2016" onclick="current_year = '2016'; update_display_with_mean(our_us, current_year);"/>
           <label for="id_2012">2016</label>
         </div>
       </form>
     </td>
-    <td><input type="number" min="0.9" max="1.1" step="0.01" id="variance_factor" value="1.0" /></td>
+    <td><form><button type="button" id="shift_left" onclick="do_shift(-0.01)">Left</button>&nbsp
+              <button type="button" id="shift_right" onclick="do_shift(0.01)">Right</button>&nbsp
+              <button type="button" id="reset_shift" onclick="update_mean()">Reset</button></form></td>
+    <td><input type="number" min="0.8" max="1.2" step="0.01" id="variance_factor" value="1.0" /></td>
   </tr>
 </table>
-<p><b>Modify the default mean of the beta distribution for any state:</b></p>
+<p><b>Modify the default mean of the distribution for any state:</b></p>
 <table style="width:100%">
   <tr>
     <th align="left">State</th>
@@ -205,6 +209,8 @@ var current_year = "2000";
 var democratic_evs = 0;
 var our_us;
 var republican_evs = 0;
+var simulation_year = "2020";
+var z = new Ziggurat();
 
 var svg = d3.select("svg"),
     width = +svg.attr("width"),
@@ -239,6 +245,14 @@ d3.queue()
     })
     .await(ready);
 
+function calculate_alpha(mu, variance) {
+  return ((1 - mu) / variance - 1. / mu) * Math.pow(mu, 2.);
+}
+
+function calculate_beta(mu, alpha) {
+  return alpha * (1. / mu - 1.);
+}
+
 function do_draw(us, year) {
 
   svg.append("g")
@@ -266,8 +280,318 @@ function do_draw(us, year) {
       .attr("d", path);
 }
 
+function do_shift(by) {
+
+  shift_state_mean("01", "alabama", by);
+  shift_state_mean("02", "alaska", by);
+  shift_state_mean("04", "arizona", by);
+  shift_state_mean("05", "arkansas", by);
+  shift_state_mean("06", "california", by);
+  shift_state_mean("08", "colorado", by);
+  shift_state_mean("09", "connecticut", by);
+  shift_state_mean("10", "delaware", by);
+  shift_state_mean("11", "dc", by);
+  shift_state_mean("12", "florida", by);
+  shift_state_mean("13", "georgia", by);
+  shift_state_mean("15", "hawaii", by);
+  shift_state_mean("16", "idaho", by);
+  shift_state_mean("17", "illinois", by);
+  shift_state_mean("18", "indiana", by);
+  shift_state_mean("19", "iowa", by);
+  shift_state_mean("20", "kansas", by);
+  shift_state_mean("21", "kentucky", by);
+  shift_state_mean("22", "louisiana", by);
+  shift_state_mean("23", "maine", by);
+  shift_state_mean("24", "maryland", by);
+  shift_state_mean("25", "massachusetts", by);
+  shift_state_mean("26", "michigan", by);
+  shift_state_mean("27", "minnesota", by);
+  shift_state_mean("28", "mississippi", by);
+  shift_state_mean("29", "missouri", by);
+  shift_state_mean("30", "montana", by);
+  shift_state_mean("31", "nebraska", by);
+  shift_state_mean("32", "nevada", by);
+  shift_state_mean("33", "new_hampshire", by);
+  shift_state_mean("34", "new_jersey", by);
+  shift_state_mean("35", "new_mexico", by);
+  shift_state_mean("36", "new_york", by);
+  shift_state_mean("37", "north_carolina", by);
+  shift_state_mean("38", "north_dakota", by);
+  shift_state_mean("39", "ohio", by);
+  shift_state_mean("40", "oklahoma", by);
+  shift_state_mean("41", "oregon", by);
+  shift_state_mean("42", "pennsylvania", by);
+  shift_state_mean("44", "rhode_island", by);
+  shift_state_mean("45", "south_carolina", by);
+  shift_state_mean("46", "south_dakota", by);
+  shift_state_mean("47", "tennessee", by);
+  shift_state_mean("48", "texas", by);
+  shift_state_mean("49", "utah", by);
+  shift_state_mean("50", "vermont", by);
+  shift_state_mean("51", "virginia", by);
+  shift_state_mean("53", "washington", by);
+  shift_state_mean("54", "west_virginia", by);
+  shift_state_mean("55", "wisconsin", by);
+  shift_state_mean("56", "wyoming", by);
+}
+
+function hold_election(my_us) {
+
+  var dem = 0;
+  var rep = 0;
+
+  var factor = (+document.getElementById("variance_factor").value) * 0.3;
+  var result = hold_state_election("01", "alabama", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("02", "alaska", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("04", "arizona", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("05", "arkansas", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("06", "california", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("08", "colorado", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("09", "connecticut", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("10", "delaware", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("11", "dc", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("12", "florida", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("13", "georgia", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("15", "hawaii", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("16", "idaho", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("17", "illinois", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("18", "indiana", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("19", "iowa", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("20", "kansas", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("21", "kentucky", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("22", "louisiana", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("23", "maine", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("24", "maryland", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("25", "massachusetts", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("26", "michigan", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("27", "minnesota", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("28", "mississippi", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("29", "missouri", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("30", "montana", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("31", "nebraska", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("32", "nevada", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("33", "new_hampshire", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("34", "new_jersey", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("35", "new_mexico", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("36", "new_york", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("37", "north_carolina", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("38", "north_dakota", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("39", "ohio", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("40", "oklahoma", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("41", "oregon", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("42", "pennsylvania", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("44", "rhode_island", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("45", "south_carolina", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("46", "south_dakota", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("47", "tennessee", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("48", "texas", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("49", "utah", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("50", "vermont", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("51", "virginia", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("53", "washington", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("54", "west_virginia", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("55", "wisconsin", factor);
+  dem += result[0];
+  rep += result[1];
+
+  result = hold_state_election("56", "wyoming", factor);
+  dem += result[0];
+  rep += result[1];
+
+  var index = make_index(simulation_year, "00");
+  var country = "united_states_";
+  from_file_dem_map.set(index, dem);
+  from_file_rep_map.set(index, rep);
+  update_display_without_mean(my_us, simulation_year);
+}
+
+function hold_state_election(id, state, factor) {
+
+  /*
+   * Make an index for the current year.  Get the mean for the
+   * state.
+   */
+  var index = make_index(current_year, id);
+  var my_mean = +document.getElementById(state + "_mean").value;
+
+  /*
+   * Get the variance for the state, and multiply it by the
+   * selected factor.  Create an election result.
+   */
+  var my_var = (+from_file_var_map.get(index)) * factor;
+  var frr = next_draw(my_mean, my_var, z);
+  var frd = 1. - frr;
+
+  // Determine votes.
+  var tot = from_file_tot_map.get(index);
+  var rep = Math.round(tot * frr);
+  var dem = tot - rep;
+
+  // Store election results.
+  simulation_index = make_index(simulation_year, id);
+  from_file_dem_map.set(simulation_index, dem);
+  from_file_rep_map.set(simulation_index, rep);
+  from_file_tot_map.set(simulation_index, tot);
+  from_file_frd_map.set(simulation_index, frd);
+  from_file_frr_map.set(simulation_index, frr);
+  from_file_var_map.set(simulation_index, my_var);
+  from_file_evs_map.set(simulation_index, +from_file_evs_map.get(index));
+  return [dem, rep, tot];
+}
+
 function make_index(year, id) {
   return (+year) * 100 + (+id);
+}
+
+function next_draw(mu, vari, my_z) {
+  return my_z.nextGaussian() * Math.sqrt(vari) + mu;
 }
 
 const numberWithCommas = (x) => {
@@ -286,11 +610,26 @@ function ready(error, us) {
   document.getElementById("id_2000").click();
 }
 
-function update_display(us, year) {
+function shift_state_mean(id, state, amount) {
+
+   var index = make_index(current_year, id);
+   var state = state + "_";
+
+   var value = +document.getElementById(state + "mean").value;
+   value += amount;
+   document.getElementById(state + "mean").value = value;
+}
+
+function update_display_with_mean(us, year) {
+
+  update_display_without_mean(us, year);
+  update_mean();
+}
+
+function update_display_without_mean(us, year) {
 
   do_draw(us, year);
-  update_mean();
-  update_votes();
+  update_votes(year);
 }
 
 function update_mean() {
@@ -350,24 +689,24 @@ function update_mean() {
 
 function update_state_mean(id, state) {
 
-  index = make_index(default_year, id);
-  state = state + "_";
+  var index = make_index(current_year, id);
+  var state = state + "_";
 
   document.getElementById(state + "mean").value =
     precisionRound(from_file_frr_map.get(index), 4);
 }
 
-function update_state_votes(id, state) {
+function update_state_votes(id, state, year) {
 
-  index = make_index(default_year, id);
-  state = state + "_";
+  var index = make_index(year, id);
+  var state = state + "_";
 
   document.getElementById(state + "dem_votes").innerHTML =
     numberWithCommas(from_file_dem_map.get(index));
   document.getElementById(state + "rep_votes").innerHTML =
     numberWithCommas(from_file_rep_map.get(index));
 
-  evs = +from_file_evs_map.get(index);
+  var evs = +from_file_evs_map.get(index);
   if (from_file_frr_map.get(index) < 0.5) {
 
     democratic_evs += evs;
@@ -387,65 +726,65 @@ function update_state_votes(id, state) {
   }
 }
 
-function update_votes() {
+function update_votes(year) {
 
   democratic_evs = 0;
   republican_evs = 0;
 
-  update_state_votes("01", "alabama");
-  update_state_votes("02", "alaska");
-  update_state_votes("04", "arizona");
-  update_state_votes("05", "arkansas");
-  update_state_votes("06", "california");
-  update_state_votes("08", "colorado");
-  update_state_votes("09", "connecticut");
-  update_state_votes("10", "delaware");
-  update_state_votes("11", "d_c");
-  update_state_votes("12", "florida");
-  update_state_votes("13", "georgia");
-  update_state_votes("15", "hawaii");
-  update_state_votes("16", "idaho");
-  update_state_votes("17", "illinois");
-  update_state_votes("18", "indiana");
-  update_state_votes("19", "iowa");
-  update_state_votes("20", "kansas");
-  update_state_votes("21", "kentucky");
-  update_state_votes("22", "louisiana");
-  update_state_votes("23", "maine");
-  update_state_votes("24", "maryland");
-  update_state_votes("25", "massachusetts");
-  update_state_votes("26", "michigan");
-  update_state_votes("27", "minnesota");
-  update_state_votes("28", "mississippi");
-  update_state_votes("29", "missouri");
-  update_state_votes("30", "montana");
-  update_state_votes("31", "nebraska");
-  update_state_votes("32", "nevada");
-  update_state_votes("33", "new_hampshire");
-  update_state_votes("34", "new_jersey");
-  update_state_votes("35", "new_mexico");
-  update_state_votes("36", "new_york");
-  update_state_votes("37", "north_carolina");
-  update_state_votes("38", "north_dakota");
-  update_state_votes("39", "ohio");
-  update_state_votes("40", "oklahoma");
-  update_state_votes("41", "oregon");
-  update_state_votes("42", "pennsylvania");
-  update_state_votes("44", "rhode_island");
-  update_state_votes("45", "south_carolina");
-  update_state_votes("46", "south_dakota");
-  update_state_votes("47", "tennessee");
-  update_state_votes("48", "texas");
-  update_state_votes("49", "utah");
-  update_state_votes("50", "vermont");
-  update_state_votes("51", "virginia");
-  update_state_votes("53", "washington");
-  update_state_votes("54", "west_virginia");
-  update_state_votes("55", "wisconsin");
-  update_state_votes("56", "wyoming");
+  update_state_votes("01", "alabama", year);
+  update_state_votes("02", "alaska", year);
+  update_state_votes("04", "arizona", year);
+  update_state_votes("05", "arkansas", year);
+  update_state_votes("06", "california", year);
+  update_state_votes("08", "colorado", year);
+  update_state_votes("09", "connecticut", year);
+  update_state_votes("10", "delaware", year);
+  update_state_votes("11", "d_c", year);
+  update_state_votes("12", "florida", year);
+  update_state_votes("13", "georgia", year);
+  update_state_votes("15", "hawaii", year);
+  update_state_votes("16", "idaho", year);
+  update_state_votes("17", "illinois", year);
+  update_state_votes("18", "indiana", year);
+  update_state_votes("19", "iowa", year);
+  update_state_votes("20", "kansas", year);
+  update_state_votes("21", "kentucky", year);
+  update_state_votes("22", "louisiana", year);
+  update_state_votes("23", "maine", year);
+  update_state_votes("24", "maryland", year);
+  update_state_votes("25", "massachusetts", year);
+  update_state_votes("26", "michigan", year);
+  update_state_votes("27", "minnesota", year);
+  update_state_votes("28", "mississippi", year);
+  update_state_votes("29", "missouri", year);
+  update_state_votes("30", "montana", year);
+  update_state_votes("31", "nebraska", year);
+  update_state_votes("32", "nevada", year);
+  update_state_votes("33", "new_hampshire", year);
+  update_state_votes("34", "new_jersey", year);
+  update_state_votes("35", "new_mexico", year);
+  update_state_votes("36", "new_york", year);
+  update_state_votes("37", "north_carolina", year);
+  update_state_votes("38", "north_dakota", year);
+  update_state_votes("39", "ohio", year);
+  update_state_votes("40", "oklahoma", year);
+  update_state_votes("41", "oregon", year);
+  update_state_votes("42", "pennsylvania", year);
+  update_state_votes("44", "rhode_island", year);
+  update_state_votes("45", "south_carolina", year);
+  update_state_votes("46", "south_dakota", year);
+  update_state_votes("47", "tennessee", year);
+  update_state_votes("48", "texas", year);
+  update_state_votes("49", "utah", year);
+  update_state_votes("50", "vermont", year);
+  update_state_votes("51", "virginia", year);
+  update_state_votes("53", "washington", year);
+  update_state_votes("54", "west_virginia", year);
+  update_state_votes("55", "wisconsin", year);
+  update_state_votes("56", "wyoming", year);
 
-  index = make_index(default_year, "00");
-  country = "united_states_";
+  var index = make_index(year, "00");
+  var country = "united_states_";
 
   document.getElementById(country + "dem_votes").innerHTML =
     numberWithCommas(from_file_dem_map.get(index));
@@ -461,8 +800,101 @@ function update_votes() {
   republican_evs = 0;
 }
 
+function Ziggurat() {
+
+  var jsr = 123456789;
+
+  var wn = Array(128);
+  var fn = Array(128);
+  var kn = Array(128);
+
+  function RNOR(){
+    var hz = SHR3();
+    var iz = hz & 127;
+    return (Math.abs(hz) < kn[iz]) ? hz * wn[iz] : nfix(hz, iz);
+  }
+
+  this.nextGaussian = function(){
+    return RNOR();
+  }
+
+  function nfix(hz, iz){
+    var r = 3.442619855899;
+    var r1 = 1.0 / r;
+    var x;
+    var y;
+    while(true){
+      x = hz * wn[iz];
+      if( iz == 0 ){
+        x = (-Math.log(UNI()) * r1); 
+        y = -Math.log(UNI());
+        while( y + y < x * x){
+          x = (-Math.log(UNI()) * r1); 
+          y = -Math.log(UNI());
+        }
+        return ( hz > 0 ) ? r+x : -r-x;
+      }
+
+      if( fn[iz] + UNI() * (fn[iz-1] - fn[iz]) < Math.exp(-0.5 * x * x) ){
+         return x;
+      }
+      hz = SHR3();
+      iz = hz & 127;
+ 
+      if( Math.abs(hz) < kn[iz]){
+        return (hz * wn[iz]);
+      }
+    }
+  }
+
+  function SHR3(){
+    var jz = jsr;
+    var jzr = jsr;
+    jzr ^= (jzr << 13);
+    jzr ^= (jzr >>> 17);
+    jzr ^= (jzr << 5);
+    jsr = jzr;
+    return (jz+jzr) | 0;
+  }
+
+  function UNI(){
+    return 0.5 * (1 + SHR3() / -Math.pow(2,31));
+  }
+
+function zigset() {
+
+    // seed generator based on current time
+    jsr ^= new Date().getTime();
+
+    var m1 = 2147483648.0;
+    var dn = 3.442619855899;
+    var tn = dn;
+    var vn = 9.91256303526217e-3;
+    
+    var q = vn / Math.exp(-0.5 * dn * dn);
+    kn[0] = Math.floor((dn/q)*m1);
+    kn[1] = 0;
+
+    wn[0] = q / m1;
+    wn[127] = dn / m1;
+
+    fn[0] = 1.0;
+    fn[127] = Math.exp(-0.5 * dn * dn);
+
+    for(var i = 126; i >= 1; i--){
+      dn = Math.sqrt(-2.0 * Math.log( vn / dn + Math.exp( -0.5 * dn * dn)));
+      kn[i+1] = Math.floor((dn/tn)*m1);
+      tn = dn;
+      fn[i] = Math.exp(-0.5 * dn * dn);
+      wn[i] = dn / m1;
+    }
+  }
+  zigset();
+}
+
 </script>
-<p><button type="button">Run the Simulation!</button></p><p><button>Reset to Actual Results for the Selected Year</button></p>
+<p><button type="button" onclick="hold_election(our_us)">Run the Simulation!</button></p>
+<p><button type="button" onClick="update_display_with_mean(our_us, current_year)">Reset to Actual Results for the Selected Year</button></p>
 <table border="1">
 <caption><b>Simulation Results</b></caption>
 <tr>
